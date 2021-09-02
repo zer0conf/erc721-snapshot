@@ -33,7 +33,7 @@ erc721-snapshot
 ```
 
 ## Configuration File / Prompt Parameters
-rename `./snapshot.config.sample.json` to `./snapshot.config.json` and change accordingly
+To avoid getting prompted for each configuration parameters, each time `erc721-snapshot` is ran, have a `./snapshot.config.json` file at the same location as `erc721-snapshot` is executed.
 
 ```json
 {
