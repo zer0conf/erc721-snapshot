@@ -9,25 +9,29 @@ module.exports.createBalances = async data => {
   const setDeposits = event => {
     const wallet = event.to;
 
-    let deposits = (balances.get(wallet) || {}).deposits || new BigNumber(0);
-    let withdrawals = (balances.get(wallet) || {}).withdrawals || new BigNumber(0);
+    let deposits = (balances.get(wallet) || {}).deposits || [];
+    let withdrawals = (balances.get(wallet) || {}).withdrawals || [];
 
-    if (event.value) {
-      deposits = deposits.plus(new BigNumber(event.value));
-      balances.set(wallet, { deposits, withdrawals });
+    if (!event.tokenId) {
+      throw new TypeError('invalid tokenId value');
     }
+
+    deposits = [...deposits, event.tokenId];
+    balances.set(wallet, { deposits, withdrawals });
   };
 
   const setWithdrawals = event => {
     const wallet = event.from;
 
-    let deposits = (balances.get(wallet) || {}).deposits || new BigNumber(0);
-    let withdrawals = (balances.get(wallet) || {}).withdrawals || new BigNumber(0);
+    let deposits = (balances.get(wallet) || {}).deposits || [];
+    let withdrawals = (balances.get(wallet) || {}).withdrawals || [];
 
-    if (event.value) {
-      withdrawals = withdrawals.plus(new BigNumber(event.value));
-      balances.set(wallet, { deposits, withdrawals });
+    if (!event.tokenId) {
+      throw new TypeError('invalid tokenId value');
     }
+
+    withdrawals = [...withdrawals, event.tokenId];
+    balances.set(wallet, { deposits, withdrawals });
   };
 
   for (const event of data.events) {
@@ -40,16 +44,13 @@ module.exports.createBalances = async data => {
       continue;
     }
 
-    const balance = value.deposits.minus(value.withdrawals);
+    const tokenIds = value.deposits.filter(x => !value.withdrawals.includes(x));
 
     closingBalances.push({
       wallet: key,
-      balance: balance.div(10 ** parseInt(data.decimals)).toFixed(data.decimals)
+      tokenIds
     });
   }
 
-  return enumerable
-    .from(closingBalances)
-    .orderByDescending(x => parseFloat(x.balance))
-    .toArray();
+  return closingBalances.filter(b => b.tokenIds.length > 0);
 };

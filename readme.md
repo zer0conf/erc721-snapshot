@@ -1,6 +1,8 @@
-# Token Snapshot: Create ERC20 Token Snapshot
+# Token Snapshot: Create ERC721 Token Snapshot
 
-This command-line utility creates a snapshot of any ERC20 token in JSON or CSV format. Use your own fully synced Ethereum node or any _Ethereum node as a service_ like Infura.
+> Forked from [erc20-snapshot](https://github.com/binodnp/erc20-snapshot)
+
+This command-line utility creates a snapshot of any ERC721 token in JSON or CSV format. Use your own fully synced Ethereum node or any _Ethereum node as a service_ like Infura.
 
 - Works without a local Ethereum node.
 - Automatically resumes the next time upon failure.
@@ -9,7 +11,7 @@ This command-line utility creates a snapshot of any ERC20 token in JSON or CSV f
 ## Getting Started
 
 ```
-npm install erc20-snapshot -g
+npm install erc721-snapshot -g
 ```
 
 ### CLI Arguments
@@ -27,10 +29,11 @@ cd path/to/a/directory
 Run the program:
 
 ```
-erc20-snapshot
+erc721-snapshot
 ```
 
 ## Configuration File / Prompt Parameters
+rename `./snapshot.config.sample.json` to `./snapshot.config.json` and change accordingly
 
 ```json
 {
@@ -41,7 +44,7 @@ erc20-snapshot
   "format": "json",
   "blocksPerBatch": 2500,
   "delay": 0,
-  "checkIfContract": "yes"
+  "checkIfContract": true
 }
 ```
 
@@ -51,7 +54,7 @@ Enter your fully synced Ethereum node. Could be a local node or remote services 
 
 ### contractAddress
 
-Address of your ERC20 token.
+Address of your ERC721 contract.
 
 ### fromBlock
 
