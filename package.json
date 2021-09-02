@@ -1,6 +1,6 @@
 {
   "name": "erc721-snapshot",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ERC721 Token Snapshot",
   "main": "index.js",
   "scripts": {
